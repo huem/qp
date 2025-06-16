@@ -1,0 +1,124 @@
+{
+    "instrument": {
+        "type": "object",
+        "description": "Represents the instrument schema for relevant terms for any financial instrument",
+        "properties": {
+            "product_name_full": {"type": "string"},
+            "issue_currency_code": {"type": "string"},
+            "denomination": {"type": "number"},
+            "issue_date": {"type": "string"},
+            "initial_fixing_date": {"type": "string"},
+            "instrument_classification": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "classification_schema_type": {"type": "string", "description": "EUSIPA or SSPA product type", "enum": ["EUSIPA"]},
+                        "classification_value": {"type": "number"}
+                    },
+                    "required": ["classification_schema_type", "classification_value"]
+                }
+            },
+            "instrument_ids": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id_scheme_code": {"type": "string", "enum": ["CH", "ISIN"]},
+                        "id_value": {"type": "string"}
+                    },
+                    "required": ["id_scheme_code", "id_value"]
+                }
+            },
+            "underlyings": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "initial_reference_price": {"type": "number"},
+                        "instrument_ids": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id_scheme_code": {"type": "string", "enum": ["CH", "ISIN"]},
+                                    "id_value": {"type": "string"}
+                                },
+                                "required": ["id_scheme_code", "id_value"]
+                            }
+                        },
+                        "bloomberg_ticker": {"type": "string"},
+                        "reuters_code": {"type": "string"}
+                    },
+                    "required": ["underlying_type", "underlying_id"]
+                }
+            },
+            "payments": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "payment_type": {"type": "string", "enum": ["INCOME", "PRINCIPAL"]},
+                        "payment_value_date": {"type": "string"},
+                        "payment_fixing_date": {"type": "string"},
+                        "cash_definition": {
+                            "type": "object",
+                            "properties": {
+                                "payment_rate": {"type": "number"},
+                                "payment_amount": {"type": "number"},
+                                "payment_currency_code": {"type": "string"}
+                            },
+                            "required": ["amount", "currency_code"]
+                        },
+                        "strikes": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "strike_type": {"type": "string", "enum": ["DOWN_SIDE_RISK", "DOWN_SIDE_PROFIT_OR_BONUS", "UP_SIDE_PROFIT", "UP_SIDE_LOSS_OR_CAP"]},
+                                    "strike_rate": {"type": "number"},
+                                    "underlying_selection_type": {"type": "string", "enum": ["SINGLE", "WORST_OF", "SUM_OF"]},
+                                    "underlying_valuation_type": {"type": "string", "enum": ["PRICE_VANILLA", "PERFORMANCE"]},
+                                    "exercise_date": {"type": "string"}
+                                },
+                                "required": ["strike_type", "strike_rate", "underlying_selection_type", "underlying_valuation_type", "exercise_date"]
+                            }
+                        },
+                        "barriers": {
+                            "type": "array",
+                            "items": {"type": "object",
+                                "properties": {
+                                    "barrier_type": {"type": "string", "enum": ["KICK_IN_BARRIER", "KICK_OUT_BARRIER"]},
+                                    "barrier_level": {"type": "number"},
+                                    "underlying_selection_type": {"type": "string", "enum": ["SINGLE", "WORST_OF", "SUM_OF"]},
+                                    "underlying_valuation_type": {"type": "string", "enum": ["PRICE_VANILLA", "PERFORMANCE"]},
+                                    "observation_begin_date": {"type": "string"},
+                                    "observation_end_date": {"type": "string"}
+                                },
+                                "required": ["barrier_type", "barrier_level", "underlying_selection_type", "underlying_valuation_type", "observation_begin_date", "observation_end_date"]
+                            }
+                        },
+                        "maturity_retraction_prolongations": {
+                            "type": "array",
+                            "description": "Represents all issuer callability or investor putability features to shorten or prolong the maturity of the instrument",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "redemption_reason_type": {"type": "string", "enum": ["ISSUER_CALL"]},
+                                    "redemption_begin_date": {"type": "string"},
+                                    "redemption_end_date": {"type": "string"},
+                                    "redemption_value_date": {"type": "string"},
+                                    "payment_rate": {"type": "number"},
+                                    "payment_amount": {"type": "number"},
+                                    "payment_currency_code": {"type": "string"}
+                                }
+                            }
+                        }
+                    },
+                    "required": ["payment_type", "payment_fixing_date", "payment_value_date"]
+                }
+            }
+        },
+        "required": ["product_name_full", "issue_currency_code", "denomination", "issue_date", "initial_fixing_date", "instrument_classification", "instrument_ids", "underlyings", "payments"]
+    }
+}
