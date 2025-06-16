@@ -35,6 +35,7 @@
                 "items": {
                     "type": "object",
                     "properties": {
+                        "underlying_key": {"type": "string"},
                         "initial_reference_price": {"type": "number"},
                         "instrument_ids": {
                             "type": "array",
@@ -50,11 +51,12 @@
                         "bloomberg_ticker": {"type": "string"},
                         "reuters_code": {"type": "string"}
                     },
-                    "required": ["underlying_type", "underlying_id"]
+                    "required": ["underlying_key"]
                 }
             },
             "payments": {
                 "type": "array",
+                "description": "Represents a collection of conditional cash flows for a given financial instrument",
                 "items": {
                     "type": "object",
                     "properties": {
@@ -68,10 +70,11 @@
                                 "payment_amount": {"type": "number"},
                                 "payment_currency_code": {"type": "string"}
                             },
-                            "required": ["amount", "currency_code"]
+                            "required": ["payment_currency_code"]
                         },
                         "strikes": {
                             "type": "array",
+                            "description": "Represents a collection of one or many embedded plain vanilla options/forwards/conversions as parts of a given cash flow claim in payment",
                             "items": {
                                 "type": "object",
                                 "properties": {
@@ -86,6 +89,7 @@
                         },
                         "barriers": {
                             "type": "array",
+                            "description": "Represents a collection of all exotic options/forwards for a given payment which could be the principal, an income payment or a payment leg",
                             "items": {"type": "object",
                                 "properties": {
                                     "barrier_type": {"type": "string", "enum": ["KICK_IN_BARRIER", "KICK_OUT_BARRIER"]},
